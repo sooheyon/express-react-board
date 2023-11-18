@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import cors from "cors";
+import userRouter from "./routes/user";
 
 const app: Express = express();
 const port: number = +process.env.PORT! | 3010; // 느낌표는 이 변수 있다라고 확신 시키는 용도
@@ -10,6 +11,9 @@ app.use(express.urlencoded({ extended: true })); //extended:true 필수
 
 //cors 풀어주기 - cors 설치 필요
 app.use(cors({ origin: process.env.FRONT_URL, credentials: true }));
+
+//userRouter 사용
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, ExpressTS!!");
