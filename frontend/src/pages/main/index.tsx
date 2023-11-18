@@ -1,9 +1,22 @@
 import React, { FC, useEffect, useState } from "react";
-import { Header } from "../../components";
+import { Header, PostCard } from "../../components";
 import axios from "axios";
+
+export interface IPost {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  title: string;
+  content: string;
+  user: {
+    account: string;
+  };
+}
 
 const Main: FC = () => {
   const [account, setAccount] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
+  const [posts, setPosts] = useState<IPost[]>([]);
 
   const getMe = async () => {
     const token = localStorage.getItem("token");
@@ -26,11 +39,25 @@ const Main: FC = () => {
     }
   };
 
+  const getPosts = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACK_URL}/post?page=${page}`
+      );
+      console.log(response);
+
+      setPosts(response.data.posts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getMe();
+    getPosts();
   }, []);
 
-  return (
+  return posts.length > 0 ? (
     <>
       <Header account={account} />
       <main className="max-w-screen-md mx-auto">
@@ -42,13 +69,17 @@ const Main: FC = () => {
             <span className="w-2/12 p-2 text-center">사용자</span>
             <span className="w-2/12 p-2 text-center">작성일</span>
           </li>
-          <li>포스트 카드</li>
+          {posts.map((v, i) => {
+            return <PostCard key={`${i}`} post={v} index={i} />;
+          })}
         </ul>
         <ul className="flex text-lg justify-center">
           <li>페이지</li>
         </ul>
       </main>
     </>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
