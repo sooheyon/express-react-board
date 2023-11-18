@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -40,6 +41,10 @@ router.post("/", async (req, res) => {
     const user = await client.user.create({
       data: { account, password: hashedPassword },
     });
+
+    const token = jwt.sign({ account }, process.env.JWT_SECRET!);
+
+    return res.json({ ok: true, token });
   } catch (error) {
     console.error(error);
     //express는 여기까지만 하면 무한로딩에 빠짐
