@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
       password.trim().length === 0
     ) {
       return res.status(400).json({
-        message: "",
+        message: "Not exist data",
       });
     }
 
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "Not Exist User",
+        message: "Not exist user",
       });
     }
 
@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
     console.error(error);
 
     return res.status(500).json({
-      message: "",
+      message: "Server Error",
     });
   }
 });
