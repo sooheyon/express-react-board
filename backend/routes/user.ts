@@ -2,6 +2,8 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { verify } from "crypto";
+import { verifyToken } from "./auth";
 
 const router = express.Router();
 
@@ -45,6 +47,21 @@ router.post("/", async (req, res) => {
     const token = jwt.sign({ account }, process.env.JWT_SECRET!);
 
     return res.json({ ok: true, token });
+  } catch (error) {
+    console.error(error);
+    //express는 여기까지만 하면 무한로딩에 빠짐
+    return res.status(500).json({
+      message: "Server Error",
+    });
+  }
+});
+
+//유저 확인
+router.get("/", verifyToken, async (req: any, res) => {
+  try {
+    const { account } = req.user;
+
+    return res.json({ account });
   } catch (error) {
     console.error(error);
     //express는 여기까지만 하면 무한로딩에 빠짐
