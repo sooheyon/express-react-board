@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Create, Main, SignIn, SignUp } from "./pages";
+import { Create, Detail, Main, SignIn, SignUp } from "./pages";
 
 const App: FC = () => {
   return (
@@ -10,7 +10,7 @@ const App: FC = () => {
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route path="/create" element={<Create />}></Route>
-        <Route path="/:postID" element={<Main />}></Route>
+        <Route path="/:postID" element={<Detail />}></Route>
       </Routes>
     </BrowserRouter>
   );
