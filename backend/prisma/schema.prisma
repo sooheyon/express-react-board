@@ -13,22 +13,38 @@ generator client {
 
 // extension prisma 설치, settings에서 prisma formatting,
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  account   String   @unique
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  account   String    @unique
   password  String
   Post      Post[]
+  Comment   Comment[]
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   title     String
   content   String
   userID    Int
-  user      User     @relation(fields: [userID], references: [id])
+  user      User      @relation(fields: [userID], references: [id])
+  Comment   Comment[]
 
   @@index([userID])
+}
+
+// 작성만
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userID    Int
+  user      User     @relation(fields: [userID], references: [id])
+  postID    Int
+  post      Post     @relation(fields: [postID], references: [id])
+
+  @@index([userID])
+  @@index([postID])
 }
