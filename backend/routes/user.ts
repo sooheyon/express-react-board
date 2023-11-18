@@ -35,8 +35,10 @@ router.post("/", async (req, res) => {
       });
     }
 
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
     const user = await client.user.create({
-      data: { account, password },
+      data: { account, password: hashedPassword },
     });
   } catch (error) {
     console.error(error);
