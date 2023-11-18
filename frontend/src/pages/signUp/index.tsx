@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const [account, setAccount] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
 
   const changeAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -17,13 +17,13 @@ const SignIn = () => {
     setPassword(inputValue);
   };
 
-  const onSubmitSignIn = async (e: FormEvent) => {
+  const onSubmitSignUp = async (e: FormEvent) => {
     try {
       e.preventDefault();
       if (!account || !password) return;
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACK_URL}/auth`,
+        `${process.env.REACT_APP_BACK_URL}/user`,
         { account, password }
       );
 
@@ -38,8 +38,8 @@ const SignIn = () => {
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center pb-20">
-      <h1 className="text-2xl font-bold">Soohyeon's Board Sign In</h1>
-      <form className="mt-8 flex items-end gap-4" onSubmit={onSubmitSignIn}>
+      <h1 className="text-2xl font-bold">h662's Board Sign Up</h1>
+      <form className="mt-8 flex items-end gap-4" onSubmit={onSubmitSignUp}>
         <div className="flex flex-col gap-2 relative">
           <input
             className="input-style"
@@ -53,17 +53,20 @@ const SignIn = () => {
             value={password}
             onChange={changePassword}
           />
-          <Link
-            to="/sign-up"
-            className="absolute -bottom-5 left-2 text-xs text-blue-500 active:text-blue-700"
-          >
-            Create an account
-          </Link>
+          <div className="absolute -bottom-5 left-2 text-xs">
+            Already have an account?
+            <Link
+              className="ml-1 text-blue-500 active:text-blue-700"
+              to="/sign-in"
+            >
+              Sign In
+            </Link>
+          </div>
         </div>
-        <input className="button-style" type="submit" value="Sign In" />
+        <input className="button-style" type="submit" value="Sign Up" />
       </form>
     </main>
   );
 };
 
-export default SignIn;
+export default SignUp;
