@@ -23,8 +23,6 @@ router.post("/", verifyToken, async (req: any, res) => {
       });
     }
 
-    console.log(typeof user.id);
-
     const post = await client.post.create({
       data: { title, content, userID: user.id },
       select: {
