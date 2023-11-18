@@ -90,6 +90,10 @@ export const verifyToken = async (
         message: "Not exist user",
       });
     }
+
+    req.user = user;
+
+    next();
   } catch (error) {
     console.error(error);
 
