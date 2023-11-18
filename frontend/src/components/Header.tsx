@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+interface HeaderProps {
+  account: string;
+}
+
+const Header = ({ account }: HeaderProps) => {
   return (
     <header className="max-w-screen-md mx-auto flex justify-between items-center p-4">
       <div>
-        <span className="font-semibold">h662</span>님 환영합니다!
+        <span className="font-semibold">{account}</span>님 환영합니다!
         <Link className="button-style" to="/create">
           Create
         </Link>
