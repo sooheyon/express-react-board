@@ -5,7 +5,7 @@ import authRouter from "./routes/auth";
 import postRouter from "./routes/post";
 
 const app: Express = express();
-const port: number = +process.env.PORT! | 3010; // 느낌표는 이 변수 있다라고 확신 시키는 용도
+const port: number = +process.env.PORT! || 3010; // 느낌표는 이 변수 있다라고 확신 시키는 용도
 
 //json 컴파일러 역할 미들웨어 설치
 app.use(express.json());
