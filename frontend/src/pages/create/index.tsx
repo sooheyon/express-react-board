@@ -11,6 +11,10 @@ const Create = () => {
 
   const { account, getMe } = useMe();
 
+  const goToMain = () => {
+    navigate("/");
+  };
+
   const submitCreate = async (e: FormEvent) => {
     try {
       e.preventDefault();
@@ -38,7 +42,7 @@ const Create = () => {
         }
       );
 
-      navigate("/");
+      goToMain();
     } catch (error) {
       console.log(error);
     }
@@ -48,13 +52,19 @@ const Create = () => {
     const value = e.target.value;
     setTitle(value);
   };
+
   const changeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setContent(value);
   };
 
+  const prepare = async () => {
+    const account = await getMe();
+    if (!account) goToMain();
+  };
+
   useEffect(() => {
-    getMe();
+    prepare();
   }, []);
 
   return (

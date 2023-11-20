@@ -20,8 +20,10 @@ const useMe = () => {
       );
 
       setAccount(response.data.account);
+      return response.data.account;
     } catch (error) {
       console.error(error);
+      return;
     }
   };
   return {

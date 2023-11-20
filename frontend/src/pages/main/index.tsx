@@ -2,6 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { Header, PostCard, Loading } from "../../components";
 import axios from "axios";
 import { useMe } from "../../hooks";
+import { HiOutlineDocumentPlus } from "react-icons/hi2";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface IPost {
   id: string;
@@ -15,6 +17,7 @@ export interface IPost {
 }
 
 const Main: FC = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -70,6 +73,10 @@ const Main: FC = () => {
     return pageCompArray;
   };
 
+  const clickCreate = () => {
+    navigate("/create");
+  };
+
   useEffect(() => {
     getMe();
     getPosts(0);
@@ -81,6 +88,16 @@ const Main: FC = () => {
       <Header account={account} />
       <main className="max-w-screen-md mx-auto">
         <h1 className="mt-20 text-center font-bold text-2xl">수현이 게시판</h1>
+        <div className="tool-box flex justify-end">
+          {!!account && (
+            <button
+              onClick={clickCreate}
+              className="transition-all hover:bg-gray-100 rounded-md  py-[4px] px-[8px]"
+            >
+              <HiOutlineDocumentPlus size={24} />
+            </button>
+          )}
+        </div>
         <ul className="mt-10 h-[440px]">
           <li className="flex justify-between border-b-2 font-semibold">
             <span className="w-2/12 p-2 text-center">아이디</span>

@@ -8,7 +8,7 @@
   }
 
   .button-style {
-    @apply text-white bg-blue-500 hover:bg-blue-700 active:bg-blue-900 ml-4 px-2 py-1 rounded-md;
+    @apply transition-all hover:bg-gray-100 rounded-md  py-[4px] px-[8px];
   }
 }
 

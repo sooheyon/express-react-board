@@ -1,26 +1,31 @@
 import React, { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { PiSignOut } from "react-icons/pi";
 
 interface HeaderProps {
   account: string;
 }
 
 const Header: FC<HeaderProps> = ({ account }) => {
+  const navigate = useNavigate();
   const clickSignOut = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    navigate("/");
   };
 
   return (
-    <header className="max-w-screen-md mx-auto flex items-center p-4">
+    <header
+      className={`max-w-screen-md mx-auto flex items-center p-4 ${
+        account ? "" : "justify-end"
+      }`}
+    >
       {account ? (
-        <div>
-          <span className="font-semibold">{account}</span>님 환영합니다!
-          <Link className="button-style" to="/create">
-            Create
-          </Link>
+        <div className="flex w-full justify-between">
+          <div>
+            <span className="font-semibold">{account}</span>님 환영합니다!
+          </div>
           <button className="button-style" onClick={clickSignOut}>
-            Sign out
+            <PiSignOut size={24} />
           </button>
         </div>
       ) : (
