@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Header, PostCard } from "../../components";
+import { Header, PostCard, Loading } from "../../components";
 import axios from "axios";
 import { useMe } from "../../hooks";
 
@@ -98,7 +98,7 @@ const Main: FC = () => {
       </main>
     </>
   ) : (
-    <div>Loading...</div>
+    <Loading />
   );
 };
 
