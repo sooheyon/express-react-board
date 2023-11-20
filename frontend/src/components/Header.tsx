@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiSignOut } from "react-icons/pi";
+import { IoPersonOutline } from "react-icons/io5";
 
 interface HeaderProps {
   account: string;
@@ -11,13 +12,16 @@ const Header: FC<HeaderProps> = ({ account }) => {
   const clickSignOut = () => {
     localStorage.removeItem("token");
     navigate("/");
+    window.location.reload();
+  };
+
+  const clickSignIn = () => {
+    navigate("/sign-in");
   };
 
   return (
     <header
-      className={`max-w-screen-md mx-auto flex items-center p-4 ${
-        account ? "" : "justify-end"
-      }`}
+      className={`max-w-screen-md mx-auto flex items-center pt-4 pb-4 pl-4`}
     >
       {account ? (
         <div className="flex w-full justify-between">
@@ -29,16 +33,10 @@ const Header: FC<HeaderProps> = ({ account }) => {
           </button>
         </div>
       ) : (
-        <div>
-          <Link className="text-blue-500 hover:text-blue-700" to="/sign-in">
-            Sign In
-          </Link>
-          <Link
-            className="ml-4 text-blue-500 hover:text-blue-700"
-            to="/sign-up"
-          >
-            Sign Up
-          </Link>
+        <div className="flex w-full justify-end">
+          <button className="button-style" onClick={clickSignIn}>
+            <IoPersonOutline size={24} />
+          </button>
         </div>
       )}
     </header>
