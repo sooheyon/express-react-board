@@ -21,7 +21,7 @@ const PostCard: FC<PostCardProps> = ({ post, index }) => {
       >
         <span className="w-2/12 p-2 text-right">{post.id}</span>
         <span className="w-6/12 p-2">{post.title}</span>
-        <span className="w-2/12 p-2ext-center">{post.user.account}</span>
+        <span className="w-2/12 p-2 text-center">{post.user.account}</span>
         <span className="w-2/12 p-2 text t-center">
           {formatDistanceToNow(new Date(post.createdAt), {
             locale: ko,

@@ -38,7 +38,7 @@ const SignUp = () => {
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center pb-20">
-      <h1 className="text-2xl font-bold">h662's Board Sign Up</h1>
+      <h1 className="text-2xl font-bold">Soohyeon's Board Sign Up</h1>
       <form className="mt-8 flex items-end gap-4" onSubmit={onSubmitSignUp}>
         <div className="flex flex-col gap-2 relative">
           <input
