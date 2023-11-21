@@ -20,9 +20,7 @@ const Header: FC<HeaderProps> = ({ account }) => {
   };
 
   return (
-    <header
-      className={`max-w-screen-md mx-auto flex items-center pt-4 pb-4 pl-4`}
-    >
+    <header className={`max-w-screen-md mx-auto flex items-center p-4`}>
       {account ? (
         <div className="flex w-full justify-between">
           <div>
