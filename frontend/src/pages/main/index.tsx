@@ -22,7 +22,7 @@ const Main: FC = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(0);
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IPost[]>();
   const { account, getMe } = useMe();
 
   const getPosts = async (selectedPage: number) => {
@@ -85,7 +85,7 @@ const Main: FC = () => {
     getCount();
   }, []);
 
-  return posts.length > 0 ? (
+  return !!posts ? (
     <div>
       <Header account={account} />
       <main className="max-w-screen-md mx-auto px-4 pb-20">
@@ -113,7 +113,7 @@ const Main: FC = () => {
           })}
         </ul>
         <ul className="flex text-lg justify-center mt-4 gap-2">
-          {totalPage && pageComp()}
+          {!!totalPage && pageComp()}
         </ul>
       </main>
     </div>

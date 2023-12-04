@@ -18,8 +18,8 @@ model User {
   updatedAt DateTime  @updatedAt
   account   String    @unique
   password  String
-  Post      Post[]
-  Comment   Comment[]
+  post      Post[]
+  comment   Comment[]
 }
 
 model Post {
@@ -27,10 +27,10 @@ model Post {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   title     String
-  content   String
+  content   String    @db.Text //mySQL에서 사용하기 위함
   userID    Int
   user      User      @relation(fields: [userID], references: [id])
-  Comment   Comment[]
+  comment   Comment[]
 
   @@index([userID])
 }
@@ -40,6 +40,7 @@ model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  content   String   @db.Text
   userID    Int
   user      User     @relation(fields: [userID], references: [id])
   postID    Int
@@ -48,3 +49,5 @@ model Comment {
   @@index([userID])
   @@index([postID])
 }
+
+//npx prisma db push

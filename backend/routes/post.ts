@@ -11,6 +11,7 @@ const SELECT = {
   createdAt: true,
   title: true,
   content: true,
+  userID: true,
   user: {
     select: {
       account: true,
