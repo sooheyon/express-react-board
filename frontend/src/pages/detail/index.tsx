@@ -8,11 +8,16 @@ import Comment from "./components/Comment";
 import axios from "axios";
 import { IPost } from "../main";
 import { MdHomeFilled } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 
 const Detail: FC = () => {
   const [post, setPost] = useState<IPost>();
   const { account, getMe } = useMe();
   const { postID } = useParams();
+  const [editToggle, setEditToggle] = useState(false);
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   const getPost = async () => {
     try {
@@ -21,9 +26,52 @@ const Detail: FC = () => {
       );
 
       setPost(response.data.post);
+      setTitle(response.data.post.title);
+      setContent(response.data.post.content);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const clickEditComplete = async () => {
+    try {
+      if (!title && !content) return;
+
+      if (title === post?.title && content === post?.content) return;
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_BACK_URL}/post/${postID}`,
+        {
+          title,
+          content,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setPost(response.data.post);
+      setTitle(response.data.post.title);
+      setContent(response.data.post.content);
+      setEditToggle(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clickEdit = () => {
+    setEditToggle((prev) => !prev);
+  };
+
+  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const changeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
   };
 
   useEffect(() => {
@@ -37,16 +85,47 @@ const Detail: FC = () => {
       <main className="max-w-screen-md mx-auto py-24">
         {post ? (
           <div>
-            <Link to="/">
-              <button className="button-style">
-                <MdHomeFilled size={24} />
-              </button>
-            </Link>
+            <div className="flex flex-row justify-between">
+              <Link to="/">
+                <button className="button-style">
+                  <MdHomeFilled size={24} />
+                </button>
+              </Link>
+              <div className="flex flex-row gap-2 items-center">
+                {editToggle && (
+                  <button onClick={clickEditComplete}>
+                    <FaRegEdit size={24} />
+                  </button>
+                )}
+
+                {account === post.user.account && (
+                  <button onClick={clickEdit}>
+                    {editToggle ? (
+                      <MdOutlineCancel size={24} />
+                    ) : (
+                      <FaRegEdit size={24} />
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
 
             <div className="border-b-2">
-              <h1 className="text-center font-bold py-8 text-2xl">
-                {post.title}
-              </h1>
+              {editToggle ? (
+                <div className="bg-red-100 text-center py-[26px] px-20">
+                  <input
+                    type="text"
+                    value={title}
+                    className="input-style w-full"
+                    onChange={changeTitle}
+                  />
+                </div>
+              ) : (
+                <h1 className="text-center font-bold py-8 text-2xl">
+                  {post.title}
+                </h1>
+              )}
+
               <div className="text-right pb-2 text-sm px-20">
                 <span>{post.user.account}, </span>
                 <span>
@@ -57,7 +136,19 @@ const Detail: FC = () => {
                 </span>
               </div>
             </div>
-            <div className="px-20 pt-12 min-h-[360px]">{post.content}</div>
+            {editToggle ? (
+              <div className="px-20 pt-12">
+                <textarea
+                  className="input-style w-full h-96 resize-none"
+                  value={content}
+                  onChange={changeContent}
+                  name=""
+                  id=""
+                />
+              </div>
+            ) : (
+              <div className="px-20 pt-12 min-h-[360px]">{post.content}</div>
+            )}
           </div>
         ) : (
           <div></div>
