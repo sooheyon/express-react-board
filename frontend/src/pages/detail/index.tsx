@@ -1,23 +1,25 @@
 import React, { FC, useEffect, useState } from "react";
 import { useMe } from "../../hooks";
 import { Header } from "../../components";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import Comment from "./components/Comment";
 import axios from "axios";
 import { IPost } from "../main";
 import { MdHomeFilled } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 
 const Detail: FC = () => {
+  const navigate = useNavigate();
   const [post, setPost] = useState<IPost>();
   const { account, getMe } = useMe();
   const { postID } = useParams();
   const [editToggle, setEditToggle] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const getPost = async () => {
     try {
@@ -62,8 +64,27 @@ const Detail: FC = () => {
     }
   };
 
+  const clickDelete = async () => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACK_URL}/post/${postID}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const clickEdit = () => {
     setEditToggle((prev) => !prev);
+  };
+
+  const clickDeleteModal = () => {
+    setDeleteModalOpen((prev) => !prev);
   };
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +128,10 @@ const Detail: FC = () => {
                     )}
                   </button>
                 )}
+
+                <button className="button-style" onClick={clickDeleteModal}>
+                  <FaTrashAlt />
+                </button>
               </div>
             </div>
 
@@ -156,6 +181,23 @@ const Detail: FC = () => {
 
         <Comment postID={+(postID ?? "1")} />
       </main>
+      {deleteModalOpen && (
+        <div className="flex fixed w-full h-full bg-black top-0 left-0 bg-opacity-50 justify-center items-center">
+          <div className="bg-white text-xl  p-8 rounded-md">
+            <div className="text-right">
+              <button>
+                <MdOutlineCancel size={24} onClick={clickDeleteModal} />
+              </button>
+            </div>
+            <h1 className="mt-8">정말 삭제하시겠습니까?</h1>
+            <div className="mt-4 flex flex-row justify-center">
+              <button className="button-style" onClick={clickDelete}>
+                <FaTrashAlt />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
