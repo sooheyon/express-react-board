@@ -44,7 +44,7 @@ model Comment {
   userID    Int
   user      User     @relation(fields: [userID], references: [id])
   postID    Int
-  post      Post     @relation(fields: [postID], references: [id])
+  post      Post     @relation(fields: [postID], references: [id], onDelete: Cascade)
 
   @@index([userID])
   @@index([postID])
