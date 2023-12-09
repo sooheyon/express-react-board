@@ -102,4 +102,42 @@ router.get("/count", async (req, res) => {
   }
 });
 
+//글 한개 조회
+router.get("/:postID", async (req, res) => {
+  try {
+    const { postID } = req.params;
+
+    if (!postID || isNaN(+postID)) {
+      return res.status(400).json({
+        message: "Not exist post id",
+      });
+    }
+
+    const post = await client.post.findUnique({
+      where: {
+        id: +postID,
+      },
+      select: SELECT,
+    });
+
+    if (!post) {
+      return res.status(400).json({
+        message: "Not exist post",
+      });
+    }
+
+    return res.json({ post });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+});
+
+//수정
+
+//삭제
+
 export default router;
