@@ -191,7 +191,6 @@ router.put("/:postID", verifyToken, async (req: any, res) => {
 });
 
 //삭제
-//수정
 router.delete("/:postID", verifyToken, async (req: any, res) => {
   try {
     const { postID } = req.params;
@@ -214,11 +213,11 @@ router.delete("/:postID", verifyToken, async (req: any, res) => {
     }
 
     //스키마에 보존해주겠다라는 설정 추가 또는 아래 함수 추가
-    await client.comment.deleteMany({
-      where: {
-        postID: existPost.id,
-      },
-    });
+    // await client.comment.deleteMany({
+    //   where: {
+    //     postID: existPost.id,
+    //   },
+    // });
 
     const deletedPost = await client.post.delete({
       where: {
