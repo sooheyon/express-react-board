@@ -154,6 +154,36 @@ router.put("/:commentID", verifyToken, async (req: any, res) => {
 //댓글 삭제
 router.delete("/:commentID", verifyToken, async (req: any, res) => {
   try {
+    const { commentID } = req.params;
+    const { user } = req;
+
+    if (!commentID || isNaN(+commentID)) {
+      return res.status(400).json({
+        message: "",
+      });
+    }
+
+    const existComment = await client.comment.findUnique({
+      where: {
+        id: +commentID,
+      },
+    });
+
+    if (!existComment || existComment.userID !== user.id) {
+      return res.status(400).json({
+        message: "",
+      });
+    }
+
+    const deleteComment = await client.comment.delete({
+      where: {
+        id: +commentID,
+      },
+    });
+
+    return res.json({
+      id: +deleteComment.id,
+    });
   } catch (e) {
     console.error(e);
 
