@@ -114,13 +114,13 @@ const Detail: FC = () => {
               </Link>
               <div className="flex flex-row gap-2 items-center">
                 {editToggle && (
-                  <button onClick={clickEditComplete}>
+                  <button className="button-style" onClick={clickEditComplete}>
                     <FaRegEdit size={24} />
                   </button>
                 )}
 
                 {account === post.user.account && (
-                  <button onClick={clickEdit}>
+                  <button className="button-style" onClick={clickEdit}>
                     {editToggle ? (
                       <MdOutlineCancel size={24} />
                     ) : (
